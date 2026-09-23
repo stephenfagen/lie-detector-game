@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polygraph</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        margin: 0;
+        min-height: 100%;
+        background: #020609;
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .monitor {
+        width: min(1200px, 100%);
+        background:
+            linear-gradient(145deg, #1c252b, #080d11 45%, #111a20);
+        border: 3px solid #34434c;
+        border-radius: 14px;
+        box-shadow:
+            0 0 0 5px #070b0e,
+            0 25px 70px rgba(0,0,0,.8),
+            inset 0 0 30px rgba(255,255,255,.03);
+        overflow: hidden;
+    }
+
+    .topbar {
+        height: 58px;
+        display: flex;
+        align-items: center;
+        padding: 0 22px;
+        border-bottom: 2px solid #26343c;
+        background: linear-gradient(#172128, #0b1115);
+        letter-spacing: 2px;
+    }
+
+    .status-light {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: #28e875;
+        box-shadow: 0 0 12px #28e875;
+        margin-right: 14px;
+    }
+
+    .title {
+        font-size: 18px;
+        color: #d7e0e5;
+    }
+
+    .recording {
+        margin-left: auto;
+        color: #b7c2c7;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+
+    .record-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: #ef3838;
+        border-radius: 50%;
+        margin-right: 8px;
+        box-shadow: 0 0 8px #ef3838;
+    }
+
+    .screen {
+        margin: 18px;
+        background: #02080b;
+        border: 2px solid #24363f;
+        border-radius: 7px;
+        overflow: hidden;
+    }
+
+    .channels {
+        display: grid;
+        grid-template-columns: 1fr 170px;
+    }
+
+    .traces {
+        position: relative;
+    }
+
+    .channel {
+        height: 145px;
+        position: relative;
+        border-bottom: 1px solid #183039;
+        overflow: hidden;
+
+        background-image:
+            linear-gradient(rgba(30,75,90,.18) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(30,75,90,.18) 1px, transparent 1px);
+        background-size: 25px 25px;
+    }
+
+    .channel:last-child {
+        border-bottom: none;
+    }
+
+    .label {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        z-index: 3;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .unit {
+        display: block;
+        margin-top: 4px;
+        font-size: 11px;
+        opacity: .75;
+        font-weight: normal;
+    }
+
+    canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    .heart-label { color: #37ed78; }
+    .pressure-label { color: #ff4141; }
+    .resp-label { color: #28a9ff; }
+    .skin-label { color: #ffd426; }
+
+    .readouts {
+        border-left: 2px solid #183039;
+        background: #050a0d;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .readout {
+        flex: 1;
+        min-height: 100px;
+        border-bottom: 1px solid #18282f;
+        padding: 15px;
+    }
+
+    .readout:last-child {
+        border-bottom: none;
+    }
+
+    .readout-name {
+        font-size: 11px;
+        letter-spacing: 1px;
+        color: #8c9aa0;
+    }
+
+    .readout-value {
+        font-family: "Courier New", monospace;
+        font-size: 35px;
+        margin-top: 8px;
+    }
+
+    .green { color: #38e875; }
+    .red { color: #ff3d3d; }
+    .blue { color: #36aaff; }
+    .yellow { color: #ffd62d; }
+
+    .verdict {
+        margin: 0 18px 18px;
+        height: 135px;
+        border: 3px solid #263941;
+        border-radius: 10px;
+        background: #05090b;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: .25s;
+    }
+
+    .verdict-text {
+        font-family: Impact, "Arial Black", sans-serif;
+        font-size: clamp(55px, 10vw, 105px);
+        letter-spacing: 8px;
+        color: #314047;
+        transition: .25s;
+    }
+
+    .verdict.lie {
+        border-color: #8b1e1e;
+        background:
+            radial-gradient(circle, rgba(180,0,0,.35), transparent 65%),
+            #120304;
+        box-shadow: inset 0 0 30px rgba(255,0,0,.15);
+    }
+
+    .verdict.lie .verdict-text {
+        color: #ff3030;
+        text-shadow:
+            0 0 8px #ff3030,
+            0 0 25px rgba(255,0,0,.7);
+    }
+
+    .verdict.true {
+        border-color: #16713d;
+        background:
+            radial-gradient(circle, rgba(0,170,70,.3), transparent 65%),
+            #031009;
+        box-shadow: inset 0 0 30px rgba(0,255,100,.12);
+    }
+
+    .verdict.true .verdict-text {
+        color: #32ed78;
+        text-shadow:
+            0 0 8px #32ed78,
+            0 0 25px rgba(0,255,100,.6);
+    }
+
+    @media (max-width: 700px) {
+        body {
+            padding: 8px;
+        }
+
+        .channels {
+            grid-template-columns: 1fr;
+        }
+
+        .readouts {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-left: none;
+            border-top: 2px solid #183039;
+        }
+
+        .readout {
+            min-height: 75px;
+            padding: 9px;
+            border-right: 1px solid #18282f;
+        }
+
+        .readout-value {
+            font-size: 23px;
+        }
+
+        .channel {
+            height: 115px;
+        }
+
+        .verdict {
+            height: 105px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="monitor">
+
+    <div class="topbar">
+        <div class="status-light"></div>
+        <div class="title">POLYGRAPH MONITOR</div>
+
+        <div class="recording">
+            <span class="record-dot"></span>
+            RECORDING...
+        </div>
+    </div>
+
+    <div class="screen">
+
+        <div class="channels">
+
+            <div class="traces">
+
+                <div class="channel">
+                    <div class="label heart-label">
+                        HEART RATE
+                        <span class="unit">BPM</span>
+                    </div>
+                    <canvas id="heart"></canvas>
+                </div>
+
+                <div class="channel">
+                    <div class="label pressure-label">
+                        BLOOD PRESSURE
+                        <span class="unit">mmHg</span>
+                    </div>
+                    <canvas id="pressure"></canvas>
+                </div>
+
+                <div class="channel">
+                    <div class="label resp-label">
+                        RESPIRATION
+                        <span class="unit">RPM</span>
+                    </div>
+                    <canvas id="respiration"></canvas>
+                </div>
+
+                <div class="channel">
+                    <div class="label skin-label">
+                        SKIN RESPONSE
+                        <span class="unit">µS</span>
+                    </div>
+                    <canvas id="skin"></canvas>
+                </div>
+
+            </div>
+
+            <div class="readouts">
+
+                <div class="readout">
+                    <div class="readout-name">BPM</div>
+                    <div class="readout-value green" id="bpm">72</div>
+                </div>
+
+                <div class="readout">
+                    <div class="readout-name">SYS / DIA</div>
+                    <div class="readout-value red">
+                        <span id="sys">118</span>
+                        /
+                        <span id="dia">76</span>
+                    </div>
+                </div>
+
+                <div class="readout">
+                    <div class="readout-name">RPM</div>
+                    <div class="readout-value blue" id="rpm">16</div>
+                </div>
+
+                <div class="readout">
+                    <div class="readout-name">µS</div>
+                    <div class="readout-value yellow" id="microsiemens">2.4</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="verdict" id="verdict">
+        <div class="verdict-text" id="verdictText"></div>
+    </div>
+
+</div>
+
+<script>
+const canvases = {
+    heart: document.getElementById("heart"),
+    pressure: document.getElementById("pressure"),
+    respiration: document.getElementById("respiration"),
+    skin: document.getElementById("skin")
+};
+
+const ctx = {};
+
+for (const key in canvases) {
+    ctx[key] = canvases[key].getContext("2d");
+}
+
+let running = true;
+let animationId = null;
+let time = 0;
+
+function resizeCanvas(canvas) {
+    const rect = canvas.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+
+    canvas.width = rect.width * ratio;
+    canvas.height = rect.height * ratio;
+
+    const context = canvas.getContext("2d");
+    context.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+function resizeAll() {
+    Object.values(canvases).forEach(resizeCanvas);
+}
+
+window.addEventListener("resize", resizeAll);
+resizeAll();
+
+
+function drawGridLine(context, canvas) {
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+
+    context.clearRect(0, 0, w, h);
+}
+
+
+/* Realistic ECG-style waveform */
+function ecg(x) {
+
+    const beatWidth = 82;
+    const position = ((x + time * 115) % beatWidth);
+
+    let y = 0;
+
+    // baseline
+    y += Math.sin(x * .018 + time * 2) * 1.3;
+
+    // P wave
+    if (position > 12 && position < 25) {
+        y += Math.sin((position - 12) / 13 * Math.PI) * -7;
+    }
+
+    // Q
+    if (position >= 31 && position < 35) {
+        y += (position - 31) * 3;
+    }
+
+    // Huge R spike
+    if (position >= 35 && position < 40) {
+        y -= (position - 35) * 19;
+    }
+
+    // S
+    if (position >= 40 && position < 45) {
+        y += (position - 40) * 13;
+    }
+
+    // T wave
+    if (position > 52 && position < 72) {
+        y += Math.sin((position - 52) / 20 * Math.PI) * -8;
+    }
+
+    return y;
+}
+
+
+function drawECG(canvas, context) {
+
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    const mid = h / 2 + 10;
+
+    context.clearRect(0, 0, w, h);
+
+    context.beginPath();
+
+    for (let x = 0; x <= w; x += 2) {
+        const y = mid + ecg(x);
+
+        if (x === 0) {
+            context.moveTo(x, y);
+        } else {
+            context.lineTo(x, y);
+        }
+    }
+
+    context.strokeStyle = "#37ed78";
+    context.lineWidth = 2;
+    context.shadowColor = "#37ed78";
+    context.shadowBlur = 5;
+    context.stroke();
+
+    context.shadowBlur = 0;
+}
+
+
+function drawWave(canvas, context, type, color) {
+
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+
+    context.clearRect(0, 0, w, h);
+
+    context.beginPath();
+
+    for (let x = 0; x <= w; x += 2) {
+
+        let y;
+
+        if (type === "pressure") {
+            const wave = Math.sin((x + time * 70) / 55);
+            y = h / 2 + wave * 32 +
+                Math.sin(x / 8 + time * 2) * 2;
+        }
+
+        if (type === "respiration") {
+            y = h / 2 +
+                Math.sin((x + time * 25) / 45) * 28 +
+                Math.sin(x / 15 + time) * 2;
+        }
+
+        if (type === "skin") {
+            y = h / 2 +
+                Math.sin((x + time * 30) / 12) * 2 +
+                Math.sin((x + time * 10) / 55) * 7;
+
+            // occasional little spikes
+            const spike = Math.max(
+                0,
+                Math.sin((x + time * 20) / 83)
+            );
+
+            y -= spike * spike * 15;
+        }
+
+        if (x === 0) {
+            context.moveTo(x, y);
+        } else {
+            context.lineTo(x, y);
+        }
+    }
+
+    context.strokeStyle = color;
+    context.lineWidth = 1.8;
+    context.shadowColor = color;
+    context.shadowBlur = 5;
+    context.stroke();
+    context.shadowBlur = 0;
+}
+
+
+function animate() {
+
+    if (!running) return;
+
+    time += 0.016;
+
+    drawECG(
+        canvases.heart,
+        ctx.heart
+    );
+
+    drawWave(
+        canvases.pressure,
+        ctx.pressure,
+        "pressure",
+        "#ff4141"
+    );
+
+    drawWave(
+        canvases.respiration,
+        ctx.respiration,
+        "respiration",
+        "#28a9ff"
+    );
+
+    drawWave(
+        canvases.skin,
+        ctx.skin,
+        "skin",
+        "#ffd426"
+    );
+
+    // Small realistic variation in readings
+    document.getElementById("bpm").textContent =
+        Math.round(72 + Math.sin(time * 1.7) * 2);
+
+    document.getElementById("rpm").textContent =
+        Math.round(16 + Math.sin(time * .7));
+
+    document.getElementById("microsiemens").textContent =
+        (2.4 + Math.sin(time * .9) * .15).toFixed(1);
+
+    animationId = requestAnimationFrame(animate);
+}
+
+
+function playBuzz() {
+
+    const AudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+    if (!AudioContext) return;
+
+    const audio = new AudioContext();
+
+    const oscillator = audio.createOscillator();
+    const gain = audio.createGain();
+
+    oscillator.type = "sawtooth";
+    oscillator.frequency.setValueAtTime(110, audio.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(
+        65,
+        audio.currentTime + 0.35
+    );
+
+    gain.gain.setValueAtTime(.001, audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+        .25,
+        audio.currentTime + .02
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        audio.currentTime + .35
+    );
+
+    oscillator.connect(gain);
+    gain.connect(audio.destination);
+
+    oscillator.start();
+    oscillator.stop(audio.currentTime + .35);
+}
+
+
+function playDing() {
+
+    const AudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+    if (!AudioContext) return;
+
+    const audio = new AudioContext();
+
+    const oscillator = audio.createOscillator();
+    const gain = audio.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(
+        660,
+        audio.currentTime
+    );
+
+    oscillator.frequency.exponentialRampToValueAtTime(
+        880,
+        audio.currentTime + .18
+    );
+
+    gain.gain.setValueAtTime(.001, audio.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+        .25,
+        audio.currentTime + .02
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        audio.currentTime + .65
+    );
+
+    oscillator.connect(gain);
+    gain.connect(audio.destination);
+
+    oscillator.start();
+    oscillator.stop(audio.currentTime + .65);
+}
+
+
+function showResult(result) {
+
+    if (!running) return;
+
+    running = false;
+
+    cancelAnimationFrame(animationId);
+
+    const verdict =
+        document.getElementById("verdict");
+
+    const text =
+        document.getElementById("verdictText");
+
+    verdict.classList.remove("lie", "true");
+
+    if (result === "lie") {
+
+        verdict.classList.add("lie");
+        text.textContent = "LIE";
+
+        playBuzz();
+
+    } else {
+
+        verdict.classList.add("true");
+        text.textContent = "TRUE";
+
+        playDing();
+    }
+}
+
+
+function reset() {
+
+    running = true;
+
+    const verdict =
+        document.getElementById("verdict");
+
+    const text =
+        document.getElementById("verdictText");
+
+    verdict.classList.remove("lie", "true");
+    text.textContent = "";
+
+    time = 0;
+
+    animate();
+}
+
+
+/*
+    SPACE = LIE
+    ENTER = TRUE
+    R = RESET
+*/
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.code === "Space") {
+        event.preventDefault();
+        showResult("lie");
+    }
+
+    if (event.code === "Enter") {
+        event.preventDefault();
+        showResult("true");
+    }
+
+    if (event.key.toLowerCase() === "r") {
+        reset();
+    }
+});
+
+
+animate();
+</script>
+
+</body>
+  </html>
