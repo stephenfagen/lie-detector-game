@@ -1708,233 +1708,85 @@ function createAudioContext() {
 
 
 /* =========================================
-   BULLHORN LIE ALARM
+   LIE BUZZER
 ========================================= */
 
 function playLieAlarm() {
 
-    const audio =
-        createAudioContext();
+    const audio = createAudioContext();
 
     if(!audio) {
         return;
     }
 
-    const now =
-        audio.currentTime;
-
+    const now = audio.currentTime;
 
     /*
-       =====================================
-       MAIN BULLHORN TONE
-       =====================================
-
-       Sawtooth gives it a harsh PA/bullhorn
-       character rather than a clean musical tone.
+       ONE continuous extended buzzer.
+       Fixed low pitch, harsh electronic/mechanical tone.
+       No sweep, no notes, no separate sound effects.
     */
 
-    const osc =
-        audio.createOscillator();
+    const osc = audio.createOscillator();
+    const gain = audio.createGain();
 
-    const gain =
-        audio.createGain();
+    osc.type = "square";
+    osc.frequency.setValueAtTime(112, now);
 
-
-    osc.type =
-        "sawtooth";
-
-
-    /*
-       Start high and drop aggressively.
-    */
-
-    osc.frequency.setValueAtTime(
-        520,
-        now
-    );
-
-    osc.frequency.exponentialRampToValueAtTime(
-        230,
-        now + .65
-    );
-
-
-    /*
-       Loud attack.
-    */
-
-    gain.gain.setValueAtTime(
-        .0001,
-        now
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .65,
-        now + .025
-    );
-
-
-    gain.gain.setValueAtTime(
-        .65,
-        now + .45
-    );
-
-
-    gain.gain.exponentialRampToValueAtTime(
-        .0001,
-        now + .75
-    );
-
+    gain.gain.setValueAtTime(.0001, now);
+    gain.gain.exponentialRampToValueAtTime(.62, now + .008);
+    gain.gain.setValueAtTime(.62, now + 1.02);
+    gain.gain.exponentialRampToValueAtTime(.0001, now + 1.04);
 
     osc.connect(gain);
-
-    gain.connect(
-        audio.destination
-    );
-
+    gain.connect(audio.destination);
 
     osc.start(now);
-
-    osc.stop(
-        now + .8
-    );
-
+    osc.stop(now + 1.06);
 
     /*
-       =====================================
-       LOW HORN LAYER
-       =====================================
+       Add fixed harmonics through separate oscillators.
+       They remain at the same pitch for the entire buzzer.
     */
 
-    const horn =
-        audio.createOscillator();
+    const harmonic2 = audio.createOscillator();
+    const harmonic2Gain = audio.createGain();
 
-    const hornGain =
-        audio.createGain();
+    harmonic2.type = "square";
+    harmonic2.frequency.setValueAtTime(224, now);
 
+    harmonic2Gain.gain.setValueAtTime(.0001, now);
+    harmonic2Gain.gain.exponentialRampToValueAtTime(.17, now + .008);
+    harmonic2Gain.gain.setValueAtTime(.17, now + 1.02);
+    harmonic2Gain.gain.exponentialRampToValueAtTime(.0001, now + 1.04);
 
-    horn.type =
-        "square";
+    harmonic2.connect(harmonic2Gain);
+    harmonic2Gain.connect(audio.destination);
 
-
-    horn.frequency.setValueAtTime(
-        180,
-        now
-    );
-
-    horn.frequency.exponentialRampToValueAtTime(
-        95,
-        now + .7
-    );
-
-
-    hornGain.gain.setValueAtTime(
-        .0001,
-        now
-    );
-
-    hornGain.gain.exponentialRampToValueAtTime(
-        .30,
-        now + .025
-    );
-
-    hornGain.gain.exponentialRampToValueAtTime(
-        .0001,
-        now + .72
-    );
-
-
-    horn.connect(
-        hornGain
-    );
-
-    hornGain.connect(
-        audio.destination
-    );
-
-
-    horn.start(now);
-
-    horn.stop(
-        now + .75
-    );
-
+    harmonic2.start(now);
+    harmonic2.stop(now + 1.06);
 
     /*
-       =====================================
-       ELECTRONIC DISTORTION BURST
-       =====================================
+       Low-frequency body gives the buzzer its
+       heavy TV/game-show ERRRR character.
     */
 
-    const noiseBuffer =
-        audio.createBuffer(
-            1,
-            audio.sampleRate * .28,
-            audio.sampleRate
-        );
+    const low = audio.createOscillator();
+    const lowGain = audio.createGain();
 
+    low.type = "sine";
+    low.frequency.setValueAtTime(56, now);
 
-    const data =
-        noiseBuffer.getChannelData(0);
+    lowGain.gain.setValueAtTime(.0001, now);
+    lowGain.gain.exponentialRampToValueAtTime(.20, now + .008);
+    lowGain.gain.setValueAtTime(.20, now + 1.02);
+    lowGain.gain.exponentialRampToValueAtTime(.0001, now + 1.04);
 
+    low.connect(lowGain);
+    lowGain.connect(audio.destination);
 
-    for(
-        let i = 0;
-        i < data.length;
-        i++
-    ) {
-
-        data[i] =
-            (
-                Math.random() * 2 - 1
-            ) * .35;
-
-    }
-
-
-    const noise =
-        audio.createBufferSource();
-
-    const noiseGain =
-        audio.createGain();
-
-
-    noise.buffer =
-        noiseBuffer;
-
-
-    noiseGain.gain.setValueAtTime(
-        .0001,
-        now + .02
-    );
-
-    noiseGain.gain.exponentialRampToValueAtTime(
-        .18,
-        now + .04
-    );
-
-    noiseGain.gain.exponentialRampToValueAtTime(
-        .0001,
-        now + .28
-    );
-
-
-    noise.connect(
-        noiseGain
-    );
-
-    noiseGain.connect(
-        audio.destination
-    );
-
-
-    noise.start(
-        now + .02
-    );
-
-    noise.stop(
-        now + .30
-    );
+    low.start(now);
+    low.stop(now + 1.06);
 }
 
 
@@ -1944,74 +1796,104 @@ function playLieAlarm() {
 
 function playTrueSound() {
 
-    const audio =
-        createAudioContext();
+    const audio = createAudioContext();
 
     if(!audio) {
         return;
     }
 
-    const now =
-        audio.currentTime;
+    const now = audio.currentTime;
 
+    /*
+       QUIZ-SHOW CORRECT ANSWER:
+       DING — DING — DING!
 
-    [0,.13].forEach(
-        (offset,index) => {
+       Three separate bright bell hits.
+       The notes are intentionally the SAME pitch:
+       this is not a musical scale.
+       The final DING is slightly stronger/longer.
+    */
 
-            const osc =
-                audio.createOscillator();
+    const dings = [
+        { offset: 0.00, frequency: 880,  volume: .28, decay: 11 },
+        { offset: 0.20, frequency: 880,  volume: .32, decay: 10 },
+        { offset: 0.40, frequency: 880,  volume: .48, decay: 7.5 }
+    ];
 
-            const gain =
-                audio.createGain();
+    dings.forEach(ding => {
 
+        const osc = audio.createOscillator();
+        const gain = audio.createGain();
 
-            osc.type =
-                "sine";
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(
+            ding.frequency,
+            now + ding.offset
+        );
 
+        const start = now + ding.offset;
 
-            osc.frequency.setValueAtTime(
-                index === 0
-                    ? 660
-                    : 880,
-                now + offset
-            );
+        gain.gain.setValueAtTime(
+            .001,
+            start
+        );
 
+        gain.gain.exponentialRampToValueAtTime(
+            ding.volume,
+            start + .003
+        );
 
-            gain.gain.setValueAtTime(
-                .001,
-                now + offset
-            );
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            start + .42
+        );
 
+        osc.connect(gain);
+        gain.connect(audio.destination);
 
-            gain.gain.exponentialRampToValueAtTime(
-                .28,
-                now + offset + .025
-            );
+        osc.start(start);
+        osc.stop(start + .46);
+    });
 
+    /*
+       Subtle bell harmonics make the DING sound
+       more like a quiz/game-show chime.
+    */
 
-            gain.gain.exponentialRampToValueAtTime(
-                .001,
-                now + offset + .45
-            );
+    const finalStart = now + .40;
 
+    [1760, 2640].forEach((frequency, index) => {
 
-            osc.connect(gain);
+        const osc = audio.createOscillator();
+        const gain = audio.createGain();
 
-            gain.connect(
-                audio.destination
-            );
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(
+            frequency,
+            finalStart
+        );
 
+        gain.gain.setValueAtTime(
+            .001,
+            finalStart
+        );
 
-            osc.start(
-                now + offset
-            );
+        gain.gain.exponentialRampToValueAtTime(
+            index === 0 ? .12 : .055,
+            finalStart + .003
+        );
 
-            osc.stop(
-                now + offset + .5
-            );
+        gain.gain.exponentialRampToValueAtTime(
+            .001,
+            finalStart + .32
+        );
 
-        }
-    );
+        osc.connect(gain);
+        gain.connect(audio.destination);
+
+        osc.start(finalStart);
+        osc.stop(finalStart + .36);
+    });
 }
 
 
