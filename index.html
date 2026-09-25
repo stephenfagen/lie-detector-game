@@ -1,107 +1,131 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Polygraph Monitor</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
-html, body {
+html,
+body {
     margin: 0;
-    min-height: 100%;
-    background: #020609;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #010406;
     font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
 
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
 }
 
 .monitor {
-    width: min(1200px, 100%);
-    background: linear-gradient(145deg,#1c252b,#080d11 45%,#111a20);
-    border: 3px solid #34434c;
-    border-radius: 14px;
-    box-shadow:
-        0 0 0 5px #070b0e,
-        0 25px 70px rgba(0,0,0,.8),
-        inset 0 0 30px rgba(255,255,255,.03);
-    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background:
+        linear-gradient(145deg,#172127,#060b0e 45%,#11191e);
 }
 
+/* =====================================================
+   TOP BAR
+===================================================== */
+
 .topbar {
-    height: 58px;
+    height: 64px;
+    min-height: 64px;
     display: flex;
     align-items: center;
-    padding: 0 22px;
+    padding: 0 28px;
     border-bottom: 2px solid #26343c;
-    background: linear-gradient(#172128,#0b1115);
+    background:
+        linear-gradient(#172128,#090e12);
     letter-spacing: 2px;
 }
 
 .status-light {
-    width: 11px;
-    height: 11px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background: #28e875;
-    box-shadow: 0 0 12px #28e875;
-    margin-right: 14px;
+    background: #2bea78;
+    box-shadow: 0 0 14px #2bea78;
+    margin-right: 15px;
 }
 
 .title {
-    font-size: 18px;
-    color: #d7e0e5;
+    font-size: 20px;
+    color: #dce5e9;
+    font-weight: 500;
 }
 
 .recording {
     margin-left: auto;
-    color: #b7c2c7;
+    color: #9daab0;
     font-size: 13px;
+    letter-spacing: 1px;
 }
 
 .record-dot {
     display: inline-block;
-    width: 8px;
-    height: 8px;
-    background: #ef3838;
-    border-radius: 50%;
+    width: 9px;
+    height: 9px;
     margin-right: 8px;
-    box-shadow: 0 0 8px #ef3838;
+    border-radius: 50%;
+    background: #ed3535;
+    box-shadow: 0 0 10px #ed3535;
+    animation: recordPulse 1s infinite;
 }
 
+@keyframes recordPulse {
+    50% {
+        opacity: .35;
+    }
+}
+
+/* =====================================================
+   MAIN DISPLAY
+===================================================== */
+
 .screen {
-    margin: 18px;
-    background: #02080b;
-    border: 2px solid #24363f;
+    flex: 1;
+    min-height: 0;
+    margin: 16px;
+    border: 2px solid #263b45;
     border-radius: 7px;
+    background: #02080b;
     overflow: hidden;
+    display: flex;
 }
 
 .channels {
+    width: 100%;
+    height: 100%;
     display: grid;
-    grid-template-columns: 1fr 170px;
+    grid-template-columns: minmax(0,1fr) 190px;
 }
 
 .traces {
-    position: relative;
+    min-width: 0;
+    height: 100%;
 }
 
 .channel {
-    height: 145px;
+    height: 25%;
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid #183039;
+    border-bottom: 1px solid #173039;
 
     background-image:
-        linear-gradient(rgba(30,75,90,.18) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(30,75,90,.18) 1px,transparent 1px);
+        linear-gradient(rgba(35,83,99,.18) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(35,83,99,.18) 1px,transparent 1px);
+
     background-size: 25px 25px;
 }
 
@@ -109,47 +133,65 @@ body {
     border-bottom: none;
 }
 
+.channel canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .label {
     position: absolute;
-    top: 17px;
-    left: 18px;
-    z-index: 3;
+    z-index: 5;
+    top: 14px;
+    left: 20px;
     font-size: 13px;
     font-weight: bold;
     letter-spacing: 1px;
+    pointer-events: none;
+    text-shadow: 0 1px 3px #000;
 }
 
 .unit {
     display: block;
     margin-top: 4px;
-    font-size: 11px;
+    font-size: 10px;
     opacity: .7;
     font-weight: normal;
 }
 
-canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
+.heart-label {
+    color: #35ee78;
 }
 
-.heart-label { color:#37ed78; }
-.pressure-label { color:#ff4141; }
-.resp-label { color:#28a9ff; }
-.skin-label { color:#ffd426; }
+.pressure-label {
+    color: #ff4242;
+}
+
+.resp-label {
+    color: #31aaff;
+}
+
+.skin-label {
+    color: #ffd429;
+}
+
+/* =====================================================
+   NUMERICAL READOUTS
+===================================================== */
 
 .readouts {
-    border-left: 2px solid #183039;
-    background: #050a0d;
+    border-left: 2px solid #173039;
+    background: #04090c;
     display: flex;
     flex-direction: column;
 }
 
 .readout {
     flex: 1;
-    min-height: 100px;
-    border-bottom: 1px solid #18282f;
-    padding: 15px;
+    min-height: 0;
+    padding: 16px;
+    border-bottom: 1px solid #182a32;
 }
 
 .readout:last-child {
@@ -157,103 +199,300 @@ canvas {
 }
 
 .readout-name {
+    color: #78878e;
     font-size: 11px;
     letter-spacing: 1px;
-    color: #8c9aa0;
 }
 
 .readout-value {
-    font-family: "Courier New", monospace;
-    font-size: 32px;
-    margin-top: 8px;
+    margin-top: 7px;
+    font-family: "Courier New",monospace;
+    font-size: 36px;
+    line-height: 1;
 }
 
-.green { color:#38e875; }
-.red { color:#ff3d3d; }
-.blue { color:#36aaff; }
-.yellow { color:#ffd62d; }
+.green {
+    color: #38e875;
+}
+
+.red {
+    color: #ff3c3c;
+}
+
+.blue {
+    color: #35aaff;
+}
+
+.yellow {
+    color: #ffd52a;
+}
+
+/* =====================================================
+   ANALYSIS / CONFIDENCE
+===================================================== */
+
+.analysis {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 20;
+
+    min-width: 280px;
+    padding: 15px 25px;
+
+    text-align: center;
+
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 5px;
+
+    background: rgba(2,8,11,.88);
+    box-shadow: 0 0 35px rgba(0,0,0,.7);
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+}
+
+.analysis.visible {
+    opacity: 1;
+}
+
+.analysis-title {
+    font-size: 15px;
+    letter-spacing: 4px;
+    color: #d5e0e4;
+}
+
+.analysis-status {
+    margin-top: 8px;
+    font-family: "Courier New",monospace;
+    font-size: 12px;
+    color: #55df8a;
+}
+
+.confidence {
+    margin-top: 13px;
+    height: 5px;
+    background: #16252b;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.confidence-bar {
+    height: 100%;
+    width: 0%;
+    background: #42df80;
+    box-shadow: 0 0 8px #42df80;
+}
+
+/* =====================================================
+   VERDICT
+===================================================== */
 
 .verdict {
-    margin: 0 18px 18px;
-    height: 135px;
+    height: 150px;
+    min-height: 150px;
+    margin: 0 16px 16px;
+
     border: 3px solid #263941;
     border-radius: 10px;
-    background: #05090b;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: .25s;
+
+    background: #04090b;
+
+    transition:
+        background .2s,
+        border-color .2s,
+        box-shadow .2s;
 }
 
 .verdict-text {
     font-family: Impact,"Arial Black",sans-serif;
-    font-size: clamp(55px,10vw,105px);
-    letter-spacing: 8px;
-    color: #314047;
-    transition: .25s;
+    font-size: clamp(60px,10vw,115px);
+    letter-spacing: 10px;
+    color: #26343a;
+
+    transition:
+        color .2s,
+        text-shadow .2s;
 }
 
 .verdict.lie {
-    border-color: #9d1616;
+    border-color: #a01818;
+
     background:
-        radial-gradient(circle,rgba(220,0,0,.45),transparent 65%),
-        #160203;
+        radial-gradient(
+            circle,
+            rgba(220,0,0,.45),
+            transparent 68%
+        ),
+        #170203;
+
     box-shadow:
-        inset 0 0 35px rgba(255,0,0,.25),
+        inset 0 0 45px rgba(255,0,0,.25),
         0 0 25px rgba(255,0,0,.15);
 }
 
 .verdict.lie .verdict-text {
-    color:#ff2020;
+    color: #ff2222;
+
     text-shadow:
-        0 0 8px #ff2020,
-        0 0 25px rgba(255,0,0,.8);
+        0 0 8px #ff2222,
+        0 0 25px #ff0000,
+        0 0 50px rgba(255,0,0,.6);
 }
 
 .verdict.true {
-    border-color:#16713d;
+    border-color: #15713d;
+
     background:
-        radial-gradient(circle,rgba(0,170,70,.3),transparent 65%),
+        radial-gradient(
+            circle,
+            rgba(0,180,75,.3),
+            transparent 68%
+        ),
         #031009;
-    box-shadow:inset 0 0 30px rgba(0,255,100,.12);
+
+    box-shadow:
+        inset 0 0 40px rgba(0,255,100,.13);
 }
 
 .verdict.true .verdict-text {
-    color:#32ed78;
+    color: #34ed79;
+
     text-shadow:
-        0 0 8px #32ed78,
-        0 0 25px rgba(0,255,100,.6);
+        0 0 8px #34ed79,
+        0 0 25px rgba(0,255,100,.65);
 }
 
-@media(max-width:700px) {
-    body { padding:8px; }
+/* =====================================================
+   OPERATOR PANEL
+===================================================== */
 
-    .channels {
-        grid-template-columns:1fr;
+.operator {
+    position: fixed;
+    z-index: 100;
+
+    top: 20px;
+    left: 20px;
+
+    width: 280px;
+
+    padding: 18px;
+
+    border: 1px solid #4b5c64;
+    border-radius: 8px;
+
+    background: rgba(7,13,17,.97);
+
+    box-shadow: 0 15px 50px #000;
+
+    display: none;
+}
+
+.operator.open {
+    display: block;
+}
+
+.operator h3 {
+    margin: 0 0 14px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #dbe4e7;
+}
+
+.operator button {
+    width: 100%;
+    height: 42px;
+    margin-top: 8px;
+
+    border: 1px solid #35464e;
+    border-radius: 5px;
+
+    background: #111c21;
+    color: white;
+
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.operator button:hover {
+    background: #1b2a31;
+}
+
+.operator .op-lie {
+    border-color: #8c2525;
+}
+
+.operator .op-true {
+    border-color: #247447;
+}
+
+.operator .op-auto {
+    border-color: #465860;
+}
+
+.operator-status {
+    margin-top: 13px;
+    color: #89979d;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:700px) {
+
+    .topbar {
+        height: 48px;
+        min-height: 48px;
+        padding: 0 12px;
     }
 
-    .readouts {
-        display:grid;
-        grid-template-columns:repeat(4,1fr);
-        border-left:none;
-        border-top:2px solid #183039;
+    .title {
+        font-size: 14px;
+    }
+
+    .recording {
+        font-size: 10px;
+    }
+
+    .screen {
+        margin: 8px;
+    }
+
+    .channels {
+        grid-template-columns: 1fr 105px;
     }
 
     .readout {
-        min-height:75px;
-        padding:9px;
+        padding: 9px;
     }
 
     .readout-value {
-        font-size:22px;
+        font-size: 22px;
     }
 
-    .channel {
-        height:115px;
+    .label {
+        left: 10px;
+        top: 9px;
+        font-size: 9px;
+    }
+
+    .unit {
+        font-size: 8px;
     }
 
     .verdict {
-        height:105px;
+        height: 95px;
+        min-height: 95px;
+        margin: 0 8px 8px;
     }
 }
 </style>
@@ -264,14 +503,20 @@ canvas {
 <div class="monitor">
 
     <div class="topbar">
+
         <div class="status-light"></div>
-        <div class="title">POLYGRAPH MONITOR</div>
+
+        <div class="title">
+            POLYGRAPH MONITOR
+        </div>
 
         <div class="recording">
             <span class="record-dot"></span>
             RECORDING...
         </div>
+
     </div>
+
 
     <div class="screen">
 
@@ -280,108 +525,5 @@ canvas {
             <div class="traces">
 
                 <div class="channel">
-                    <div class="label heart-label">
-                        HEART RATE
-                        <span class="unit">BPM</span>
-                    </div>
-                    <canvas id="heart"></canvas>
-                </div>
 
-                <div class="channel">
-                    <div class="label pressure-label">
-                        BLOOD PRESSURE
-                        <span class="unit">mmHg</span>
-                    </div>
-                    <canvas id="pressure"></canvas>
-                </div>
-
-                <div class="channel">
-                    <div class="label resp-label">
-                        RESPIRATION
-                        <span class="unit">RPM</span>
-                    </div>
-                    <canvas id="respiration"></canvas>
-                </div>
-
-                <div class="channel">
-                    <div class="label skin-label">
-                        SKIN CONDUCTANCE
-                        <span class="unit">µS</span>
-                    </div>
-                    <canvas id="skin"></canvas>
-                </div>
-
-            </div>
-
-            <div class="readouts">
-
-                <div class="readout">
-                    <div class="readout-name">BPM</div>
-                    <div class="readout-value green" id="bpm">72</div>
-                </div>
-
-                <div class="readout">
-                    <div class="readout-name">SYS / DIA</div>
-                    <div class="readout-value red">
-                        <span id="sys">118</span> /
-                        <span id="dia">76</span>
-                    </div>
-                </div>
-
-                <div class="readout">
-                    <div class="readout-name">RPM</div>
-                    <div class="readout-value blue" id="rpm">16</div>
-                </div>
-
-                <div class="readout">
-                    <div class="readout-name">µS</div>
-                    <div class="readout-value yellow" id="microsiemens">2.4</div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="verdict" id="verdict">
-        <div class="verdict-text" id="verdictText"></div>
-    </div>
-
-</div>
-
-<script>
-
-const canvases = {
-    heart: document.getElementById("heart"),
-    pressure: document.getElementById("pressure"),
-    respiration: document.getElementById("respiration"),
-    skin: document.getElementById("skin")
-};
-
-const ctx = {};
-
-for (const key in canvases) {
-    ctx[key] = canvases[key].getContext("2d");
-}
-
-let running = true;
-let animationId = null;
-let time = 0;
-
-function resizeCanvas(canvas) {
-
-    const rect = canvas.getBoundingClientRect();
-    const ratio = window.devicePixelRatio || 1;
-
-    canvas.width = rect.width * ratio;
-    canvas.height = rect.height * ratio;
-
-    canvas.getContext("2d")
-        .setTransform(ratio,0,0,ratio,0,0);
-}
-
-function resizeAll() {
-    Object.values(canvases).forEach(resizeCanvas);
-}
-
-window.addEventListener("resize",resizeAll);
-resize
+                    <div class="label heart-label
