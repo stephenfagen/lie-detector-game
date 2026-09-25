@@ -26,15 +26,16 @@ body {
     height: 100vh;
 }
 
-/* ================================
+/* =========================================
    MAIN MACHINE
-================================ */
+========================================= */
 
 .monitor {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
+
     background:
         linear-gradient(
             145deg,
@@ -44,27 +45,42 @@ body {
         );
 }
 
-/* ================================
+/* =========================================
    TOP BAR
-================================ */
+========================================= */
 
 .topbar {
     flex: 0 0 64px;
+
     display: flex;
     align-items: center;
+
     padding: 0 28px;
+
     border-bottom: 2px solid #26343c;
-    background: linear-gradient(#172128, #090e12);
+
+    background:
+        linear-gradient(
+            #172128,
+            #090e12
+        );
+
     letter-spacing: 2px;
 }
 
 .status-light {
     width: 12px;
     height: 12px;
+
     flex: 0 0 12px;
+
     border-radius: 50%;
+
     background: #2bea78;
-    box-shadow: 0 0 14px #2bea78;
+
+    box-shadow:
+        0 0 14px #2bea78;
+
     margin-right: 15px;
 }
 
@@ -75,19 +91,28 @@ body {
 
 .recording {
     margin-left: auto;
+
     color: #9daab0;
+
     font-size: 13px;
     letter-spacing: 1px;
 }
 
 .record-dot {
     display: inline-block;
+
     width: 9px;
     height: 9px;
+
     margin-right: 8px;
+
     border-radius: 50%;
+
     background: #ed3535;
-    box-shadow: 0 0 10px #ed3535;
+
+    box-shadow:
+        0 0 10px #ed3535;
+
     animation: recordPulse 1s infinite;
 }
 
@@ -97,55 +122,61 @@ body {
     }
 }
 
-/* ================================
+/* =========================================
    SCREEN
-================================ */
+========================================= */
 
 .screen {
     flex: 1 1 auto;
+
     min-height: 0;
+
     margin: 16px;
+
     border: 2px solid #263b45;
+
     border-radius: 7px;
+
     background: #02080b;
+
     overflow: hidden;
 }
-
-/*
-   THIS IS THE IMPORTANT FIX.
-
-   The screen is now explicitly divided into
-   the waveform area and the numerical panel.
-*/
 
 .channels {
     width: 100%;
     height: 100%;
+
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 190px;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        190px;
+
     min-height: 0;
 }
 
-/* ================================
+/* =========================================
    WAVEFORM AREA
-================================ */
+========================================= */
 
 .traces {
     position: relative;
+
     min-width: 0;
     min-height: 0;
 
     display: grid;
+
     grid-template-rows:
         repeat(4, minmax(0, 1fr));
 }
 
-/* Each channel gets exactly one quarter */
-
 .channel {
     position: relative;
+
     min-height: 0;
     min-width: 0;
+
     overflow: hidden;
 
     border-bottom: 1px solid #173039;
@@ -170,6 +201,7 @@ body {
 
 .channel canvas {
     position: absolute;
+
     left: 0;
     top: 0;
 
@@ -181,13 +213,16 @@ body {
 
 .label {
     position: absolute;
+
     z-index: 5;
 
     top: 14px;
     left: 20px;
 
     font-size: 13px;
+
     font-weight: bold;
+
     letter-spacing: 1px;
 
     pointer-events: none;
@@ -198,9 +233,11 @@ body {
 
 .unit {
     display: block;
+
     margin-top: 4px;
 
     font-size: 10px;
+
     font-weight: normal;
 
     opacity: .7;
@@ -222,18 +259,20 @@ body {
     color: #ffd429;
 }
 
-/* ================================
+/* =========================================
    NUMERICAL PANEL
-================================ */
+========================================= */
 
 .readouts {
     min-height: 0;
 
     display: grid;
+
     grid-template-rows:
         repeat(4, minmax(0, 1fr));
 
     border-left: 2px solid #173039;
+
     background: #04090c;
 }
 
@@ -245,7 +284,9 @@ body {
     border-bottom: 1px solid #182a32;
 
     display: flex;
+
     flex-direction: column;
+
     justify-content: center;
 }
 
@@ -255,15 +296,21 @@ body {
 
 .readout-name {
     color: #78878e;
+
     font-size: 11px;
+
     letter-spacing: 1px;
 }
 
 .readout-value {
     margin-top: 8px;
 
-    font-family: "Courier New", monospace;
+    font-family:
+        "Courier New",
+        monospace;
+
     font-size: 34px;
+
     line-height: 1;
 }
 
@@ -283,9 +330,9 @@ body {
     color: #ffd52a;
 }
 
-/* ================================
+/* =========================================
    ANALYSIS
-================================ */
+========================================= */
 
 .analysis {
     position: absolute;
@@ -293,7 +340,8 @@ body {
     left: 50%;
     top: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
     z-index: 20;
 
@@ -303,18 +351,25 @@ body {
 
     text-align: center;
 
-    border: 1px solid rgba(255,255,255,.18);
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
     border-radius: 5px;
 
-    background: rgba(2,8,11,.92);
+    background:
+        rgba(2,8,11,.92);
 
     box-shadow:
-        0 15px 40px rgba(0,0,0,.7);
+        0 15px 40px
+        rgba(0,0,0,.7);
 
     opacity: 0;
+
     pointer-events: none;
 
-    transition: opacity .2s;
+    transition:
+        opacity .2s;
 }
 
 .analysis.visible {
@@ -323,14 +378,19 @@ body {
 
 .analysis-title {
     font-size: 15px;
+
     letter-spacing: 4px;
+
     color: #d5e0e4;
 }
 
 .analysis-status {
     margin-top: 9px;
 
-    font-family: "Courier New", monospace;
+    font-family:
+        "Courier New",
+        monospace;
+
     font-size: 11px;
 
     color: #55df8a;
@@ -350,6 +410,7 @@ body {
 
 .confidence-bar {
     height: 100%;
+
     width: 0%;
 
     background: #42df80;
@@ -358,20 +419,25 @@ body {
         0 0 8px #42df80;
 }
 
-/* ================================
+/* =========================================
    VERDICT
-================================ */
+========================================= */
 
 .verdict {
     flex: 0 0 150px;
 
     margin: 0 16px 16px;
 
-    border: 3px solid #263941;
+    border:
+        3px solid
+        #263941;
+
     border-radius: 10px;
 
     display: flex;
+
     justify-content: center;
+
     align-items: center;
 
     background: #04090b;
@@ -400,6 +466,10 @@ body {
         text-shadow .2s;
 }
 
+/* =========================================
+   LIE
+========================================= */
+
 .verdict.lie {
     border-color: #a01818;
 
@@ -412,8 +482,11 @@ body {
         #170203;
 
     box-shadow:
-        inset 0 0 45px rgba(255,0,0,.25),
-        0 0 25px rgba(255,0,0,.15);
+        inset 0 0 45px
+        rgba(255,0,0,.25),
+
+        0 0 25px
+        rgba(255,0,0,.15);
 }
 
 .verdict.lie .verdict-text {
@@ -422,8 +495,13 @@ body {
     text-shadow:
         0 0 8px #ff2222,
         0 0 25px #ff0000,
-        0 0 50px rgba(255,0,0,.6);
+        0 0 50px
+        rgba(255,0,0,.6);
 }
+
+/* =========================================
+   TRUE
+========================================= */
 
 .verdict.true {
     border-color: #15713d;
@@ -437,7 +515,8 @@ body {
         #031009;
 
     box-shadow:
-        inset 0 0 40px rgba(0,255,100,.13);
+        inset 0 0 40px
+        rgba(0,255,100,.13);
 }
 
 .verdict.true .verdict-text {
@@ -445,12 +524,13 @@ body {
 
     text-shadow:
         0 0 8px #34ed79,
-        0 0 25px rgba(0,255,100,.65);
+        0 0 25px
+        rgba(0,255,100,.65);
 }
 
-/* ================================
-   OPERATOR
-================================ */
+/* =========================================
+   HIDDEN OPERATOR PANEL
+========================================= */
 
 .operator {
     position: fixed;
@@ -464,10 +544,14 @@ body {
 
     padding: 18px;
 
-    border: 1px solid #4b5c64;
+    border:
+        1px solid
+        #4b5c64;
+
     border-radius: 8px;
 
-    background: rgba(7,13,17,.97);
+    background:
+        rgba(7,13,17,.97);
 
     box-shadow:
         0 15px 50px #000;
@@ -480,22 +564,29 @@ body {
 }
 
 .operator h3 {
-    margin: 0 0 14px;
+    margin:
+        0 0 14px;
 
     font-size: 14px;
+
     letter-spacing: 2px;
 }
 
 .operator button {
     width: 100%;
+
     height: 42px;
 
     margin-top: 8px;
 
-    border: 1px solid #35464e;
+    border:
+        1px solid
+        #35464e;
+
     border-radius: 5px;
 
     background: #111c21;
+
     color: white;
 
     cursor: pointer;
@@ -511,18 +602,21 @@ body {
     color: #89979d;
 
     font-size: 11px;
+
     line-height: 1.5;
 }
 
-/* ================================
+/* =========================================
    MOBILE
-================================ */
+========================================= */
 
 @media(max-width:700px) {
 
     .topbar {
         flex-basis: 48px;
-        padding: 0 12px;
+
+        padding:
+            0 12px;
     }
 
     .title {
@@ -539,7 +633,8 @@ body {
 
     .channels {
         grid-template-columns:
-            minmax(0, 1fr) 105px;
+            minmax(0, 1fr)
+            105px;
     }
 
     .readout {
@@ -562,15 +657,22 @@ body {
 
     .verdict {
         flex-basis: 95px;
-        margin: 0 8px 8px;
+
+        margin:
+            0 8px 8px;
     }
 }
 </style>
 </head>
 
+
 <body>
 
 <div class="monitor">
+
+    <!-- =====================================
+         TOP BAR
+    ====================================== -->
 
     <div class="topbar">
 
@@ -581,68 +683,126 @@ body {
         </div>
 
         <div class="recording">
+
             <span class="record-dot"></span>
+
             RECORDING...
+
         </div>
 
     </div>
 
 
+    <!-- =====================================
+         MAIN SCREEN
+    ====================================== -->
+
     <div class="screen">
 
         <div class="channels">
 
+            <!-- =================================
+                 WAVEFORMS
+            ================================== -->
+
             <div class="traces">
 
+
+                <!-- HEART RATE -->
+
                 <div class="channel">
 
-                    <div class="label heart-label">
+                    <div
+                        class="label heart-label">
+
                         HEART RATE
-                        <span class="unit">BPM</span>
+
+                        <span class="unit">
+                            BPM
+                        </span>
+
                     </div>
 
-                    <canvas id="heart"></canvas>
+                    <canvas
+                        id="heart">
+                    </canvas>
 
                 </div>
 
 
+                <!-- BLOOD PRESSURE -->
+
                 <div class="channel">
 
-                    <div class="label pressure-label">
+                    <div
+                        class="label pressure-label">
+
                         BLOOD PRESSURE
-                        <span class="unit">mmHg</span>
+
+                        <span class="unit">
+                            mmHg
+                        </span>
+
                     </div>
 
-                    <canvas id="pressure"></canvas>
+                    <canvas
+                        id="pressure">
+                    </canvas>
 
                 </div>
 
 
+                <!-- RESPIRATION -->
+
                 <div class="channel">
 
-                    <div class="label resp-label">
+                    <div
+                        class="label resp-label">
+
                         RESPIRATION
-                        <span class="unit">RPM</span>
+
+                        <span class="unit">
+                            RPM
+                        </span>
+
                     </div>
 
-                    <canvas id="respiration"></canvas>
+                    <canvas
+                        id="respiration">
+                    </canvas>
 
                 </div>
 
+
+                <!-- SKIN RESPONSE -->
 
                 <div class="channel">
 
-                    <div class="label skin-label">
+                    <div
+                        class="label skin-label">
+
                         SKIN CONDUCTANCE
-                        <span class="unit">µS</span>
+
+                        <span class="unit">
+                            µS
+                        </span>
+
                     </div>
 
-                    <canvas id="skin"></canvas>
+                    <canvas
+                        id="skin">
+                    </canvas>
 
                 </div>
 
 
-                <div class="analysis" id="analysis">
+                <!-- =================================
+                     ANALYSIS OVERLAY
+                ================================== -->
+
+                <div
+                    class="analysis"
+                    id="analysis">
 
                     <div class="analysis-title">
                         ANALYZING
@@ -651,7 +811,10 @@ body {
                     <div
                         class="analysis-status"
                         id="analysisStatus">
-                        ANALYZING PHYSIOLOGICAL RESPONSE
+
+                        ANALYZING
+                        PHYSIOLOGICAL RESPONSE
+
                     </div>
 
                     <div class="confidence">
@@ -668,7 +831,12 @@ body {
             </div>
 
 
+            <!-- =================================
+                 NUMERICAL READOUTS
+            ================================== -->
+
             <div class="readouts">
+
 
                 <div class="readout">
 
@@ -679,7 +847,9 @@ body {
                     <div
                         class="readout-value green"
                         id="bpm">
+
                         72
+
                     </div>
 
                 </div>
@@ -691,11 +861,18 @@ body {
                         SYS / DIA
                     </div>
 
-                    <div class="readout-value red">
+                    <div
+                        class="readout-value red">
 
-                        <span id="sys">118</span>
+                        <span id="sys">
+                            118
+                        </span>
+
                         /
-                        <span id="dia">76</span>
+
+                        <span id="dia">
+                            76
+                        </span>
 
                     </div>
 
@@ -711,7 +888,9 @@ body {
                     <div
                         class="readout-value blue"
                         id="rpm">
+
                         16
+
                     </div>
 
                 </div>
@@ -726,7 +905,9 @@ body {
                     <div
                         class="readout-value yellow"
                         id="microsiemens">
+
                         2.4
+
                     </div>
 
                 </div>
@@ -737,6 +918,10 @@ body {
 
     </div>
 
+
+    <!-- =====================================
+         VERDICT
+    ====================================== -->
 
     <div
         class="verdict"
@@ -752,13 +937,19 @@ body {
 </div>
 
 
-<!-- Hidden operator controls -->
+<!-- =========================================
+     HIDDEN OPERATOR PANEL
+
+     CTRL + SHIFT + O
+========================================= -->
 
 <div
     class="operator"
     id="operator">
 
-    <h3>OPERATOR CONTROL</h3>
+    <h3>
+        OPERATOR CONTROL
+    </h3>
 
     <button id="forceLie">
         FORCE LIE
@@ -775,7 +966,10 @@ body {
     <div
         class="operator-status"
         id="operatorStatus">
-        Mode: Automatic
+
+        Mode:
+        <b>Automatic</b>
+
     </div>
 
 </div>
@@ -783,7 +977,12 @@ body {
 
 <script>
 
+/* =========================================
+   ELEMENTS
+========================================= */
+
 const canvases = {
+
     heart:
         document.getElementById("heart"),
 
@@ -795,13 +994,16 @@ const canvases = {
 
     skin:
         document.getElementById("skin")
+
 };
 
 const ctx = {};
 
 for(const key in canvases) {
+
     ctx[key] =
         canvases[key].getContext("2d");
+
 }
 
 const verdict =
@@ -819,10 +1021,17 @@ const confidenceBar =
 const analysisStatus =
     document.getElementById("analysisStatus");
 
+const operator =
+    document.getElementById("operator");
+
 let running = true;
+
 let analyzing = false;
+
 let time = 0;
+
 let animationId = null;
+
 let forcedResult = null;
 
 
@@ -839,14 +1048,20 @@ function resizeCanvas(canvas) {
         window.devicePixelRatio || 1;
 
     canvas.width =
-        Math.max(1, Math.floor(
-            rect.width * ratio
-        ));
+        Math.max(
+            1,
+            Math.floor(
+                rect.width * ratio
+            )
+        );
 
     canvas.height =
-        Math.max(1, Math.floor(
-            rect.height * ratio
-        ));
+        Math.max(
+            1,
+            Math.floor(
+                rect.height * ratio
+            )
+        );
 
     canvas
         .getContext("2d")
@@ -860,11 +1075,15 @@ function resizeCanvas(canvas) {
         );
 }
 
+
 function resizeAll() {
 
-    Object.values(canvases)
+    Object
+        .values(canvases)
         .forEach(resizeCanvas);
+
 }
+
 
 window.addEventListener(
     "resize",
@@ -873,8 +1092,8 @@ window.addEventListener(
 
 
 /*
-   Wait one frame so CSS grid has
-   calculated the actual dimensions.
+   Let the browser finish the initial
+   CSS layout before measuring canvases.
 */
 
 requestAnimationFrame(
@@ -883,18 +1102,27 @@ requestAnimationFrame(
 
 
 /* =========================================
-   ECG
+   ECG WAVEFORM
 ========================================= */
 
 function ecgWave(position) {
 
     let y = 0;
 
+
+    /*
+       Tiny baseline electrical noise.
+    */
+
     y +=
-        Math.sin(position * .1) * .7;
+        Math.sin(
+            position * .10
+        ) * .7;
 
 
-    /* P wave */
+    /*
+       P wave
+    */
 
     if(
         position > 10 &&
@@ -907,10 +1135,13 @@ function ecgWave(position) {
                 12 *
                 Math.PI
             ) * 5;
+
     }
 
 
-    /* Q */
+    /*
+       Q wave
+    */
 
     if(
         position >= 30 &&
@@ -919,10 +1150,13 @@ function ecgWave(position) {
 
         y +=
             (position - 30) * 2.5;
+
     }
 
 
-    /* R */
+    /*
+       R wave
+    */
 
     if(
         position >= 34 &&
@@ -931,10 +1165,13 @@ function ecgWave(position) {
 
         y -=
             (position - 34) * 19;
+
     }
 
 
-    /* S */
+    /*
+       S wave
+    */
 
     if(
         position >= 39 &&
@@ -943,10 +1180,13 @@ function ecgWave(position) {
 
         y +=
             (position - 39) * 13;
+
     }
 
 
-    /* T */
+    /*
+       T wave
+    */
 
     if(
         position > 53 &&
@@ -959,6 +1199,7 @@ function ecgWave(position) {
                 19 *
                 Math.PI
             ) * 7;
+
     }
 
     return y;
@@ -967,14 +1208,25 @@ function ecgWave(position) {
 
 function drawECG() {
 
-    const canvas = canvases.heart;
-    const context = ctx.heart;
+    const canvas =
+        canvases.heart;
 
-    const w = canvas.clientWidth;
-    const h = canvas.clientHeight;
+    const context =
+        ctx.heart;
 
-    if(w <= 0 || h <= 0)
+    const w =
+        canvas.clientWidth;
+
+    const h =
+        canvas.clientHeight;
+
+    if(
+        w <= 0 ||
+        h <= 0
+    ) {
         return;
+    }
+
 
     context.clearRect(
         0,
@@ -983,8 +1235,10 @@ function drawECG() {
         h
     );
 
+
     const mid =
         h / 2 + 10;
+
 
     const phase =
         time * 115;
@@ -992,29 +1246,53 @@ function drawECG() {
 
     context.beginPath();
 
+
     for(
         let x = 0;
         x <= w;
         x += 2
     ) {
 
+        /*
+           Slightly variable beat
+           spacing gives subtle HRV.
+        */
+
         const beatWidth =
             82 +
-            Math.sin(time * .7) * 3;
+            Math.sin(
+                time * .7
+            ) * 3;
+
 
         const position =
             (x + phase) %
             beatWidth;
 
+
         const y =
             mid +
             ecgWave(position);
 
-        if(x === 0)
-            context.moveTo(x,y);
-        else
-            context.lineTo(x,y);
+
+        if(x === 0) {
+
+            context.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            context.lineTo(
+                x,
+                y
+            );
+
+        }
+
     }
+
 
     context.strokeStyle =
         "#37ed78";
@@ -1050,8 +1328,13 @@ function drawPressure() {
     const h =
         canvas.clientHeight;
 
-    if(w <= 0 || h <= 0)
+    if(
+        w <= 0 ||
+        h <= 0
+    ) {
         return;
+    }
+
 
     context.clearRect(
         0,
@@ -1060,58 +1343,90 @@ function drawPressure() {
         h
     );
 
+
     const mid =
         h / 2 + 12;
 
+
     context.beginPath();
 
+
     for(
-        let x=0;
-        x<=w;
-        x+=2
+        let x = 0;
+        x <= w;
+        x += 2
     ) {
 
         const beat =
-            ((x + time*115) % 82)
-            / 82;
+            (
+                (x + time * 115)
+                % 82
+            ) / 82;
+
 
         let pulse;
 
-        if(beat < .17) {
+
+        /*
+           Rapid systolic rise.
+        */
+
+        if(
+            beat < .17
+        ) {
 
             pulse =
                 Math.sin(
-                    beat/.17 *
-                    Math.PI/2
+                    beat /
+                    .17 *
+                    Math.PI /
+                    2
                 ) * 39;
 
         } else {
 
+            /*
+               Diastolic decay.
+            */
+
             pulse =
                 39 *
                 Math.exp(
-                    -(beat-.17)*4.2
+                    -(beat - .17) *
+                    4.2
                 );
+
         }
+
+
+        /*
+           Small dicrotic notch.
+        */
 
         const dicrotic =
             beat > .43 &&
             beat < .51
+
             ?
+
             -4 *
             Math.sin(
-                (beat-.43) /
+                (beat - .43) /
                 .08 *
                 Math.PI
             )
+
             :
+
             0;
+
 
         const noise =
             Math.sin(
-                x*.08 +
-                time*2
+                x * .08 +
+                time * 2
             ) * .7;
+
 
         const y =
             mid -
@@ -1119,11 +1434,25 @@ function drawPressure() {
             dicrotic +
             noise;
 
-        if(x===0)
-            context.moveTo(x,y);
-        else
-            context.lineTo(x,y);
+
+        if(x === 0) {
+
+            context.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            context.lineTo(
+                x,
+                y
+            );
+
+        }
+
     }
+
 
     context.strokeStyle =
         "#ff4141";
@@ -1159,8 +1488,13 @@ function drawRespiration() {
     const h =
         canvas.clientHeight;
 
-    if(w <= 0 || h <= 0)
+    if(
+        w <= 0 ||
+        h <= 0
+    ) {
         return;
+    }
+
 
     context.clearRect(
         0,
@@ -1169,37 +1503,57 @@ function drawRespiration() {
         h
     );
 
+
     context.beginPath();
 
+
     for(
-        let x=0;
-        x<=w;
-        x+=2
+        let x = 0;
+        x <= w;
+        x += 2
     ) {
 
         const shifted =
-            x + time*23;
+            x +
+            time * 23;
+
 
         const main =
             Math.sin(
                 shifted / 48
             );
 
+
         const secondary =
             Math.sin(
                 shifted / 15
             ) * 1.3;
 
+
         const y =
-            h/2 +
-            main*27 +
+            h / 2 +
+            main * 27 +
             secondary;
 
-        if(x===0)
-            context.moveTo(x,y);
-        else
-            context.lineTo(x,y);
+
+        if(x === 0) {
+
+            context.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            context.lineTo(
+                x,
+                y
+            );
+
+        }
+
     }
+
 
     context.strokeStyle =
         "#28a9ff";
@@ -1218,7 +1572,7 @@ function drawRespiration() {
 
 
 /* =========================================
-   SKIN RESPONSE
+   SKIN CONDUCTANCE
 ========================================= */
 
 function drawSkin() {
@@ -1235,8 +1589,13 @@ function drawSkin() {
     const h =
         canvas.clientHeight;
 
-    if(w <= 0 || h <= 0)
+    if(
+        w <= 0 ||
+        h <= 0
+    ) {
         return;
+    }
+
 
     context.clearRect(
         0,
@@ -1245,52 +1604,74 @@ function drawSkin() {
         h
     );
 
+
     context.beginPath();
 
+
     for(
-        let x=0;
-        x<=w;
-        x+=2
+        let x = 0;
+        x <= w;
+        x += 2
     ) {
 
         const shifted =
-            x + time*30;
+            x +
+            time * 30;
+
 
         const baseline =
             Math.sin(
-                shifted*.035
+                shifted * .035
             ) * 2;
+
 
         const slow =
             Math.sin(
-                shifted*.011
+                shifted * .011
             ) * 3;
+
 
         const response =
             Math.max(
                 0,
                 Math.sin(
-                    shifted*.018
+                    shifted * .018
                 )
             ) ** 9 * 12;
 
+
         const noise =
             Math.sin(
-                shifted*.3
+                shifted * .3
             ) * .8;
 
+
         const y =
-            h/2 +
+            h / 2 +
             baseline +
             slow -
             response +
             noise;
 
-        if(x===0)
-            context.moveTo(x,y);
-        else
-            context.lineTo(x,y);
+
+        if(x === 0) {
+
+            context.moveTo(
+                x,
+                y
+            );
+
+        } else {
+
+            context.lineTo(
+                x,
+                y
+            );
+
+        }
+
     }
+
 
     context.strokeStyle =
         "#ffd426";
@@ -1309,96 +1690,266 @@ function drawSkin() {
 
 
 /* =========================================
-   AUDIO
+   AUDIO CONTEXT
 ========================================= */
 
-function audioContext() {
+function createAudioContext() {
 
     const AudioContext =
         window.AudioContext ||
         window.webkitAudioContext;
 
-    if(!AudioContext)
+    if(!AudioContext) {
         return null;
+    }
 
     return new AudioContext();
 }
 
 
+/* =========================================
+   BULLHORN LIE ALARM
+========================================= */
+
 function playLieAlarm() {
 
     const audio =
-        audioContext();
+        createAudioContext();
 
-    if(!audio)
+    if(!audio) {
         return;
+    }
 
     const now =
         audio.currentTime;
 
 
-    [0,.17,.34,.51].forEach(
-        (offset,index) => {
+    /*
+       =====================================
+       MAIN BULLHORN TONE
+       =====================================
 
-            const osc =
-                audio.createOscillator();
+       Sawtooth gives it a harsh PA/bullhorn
+       character rather than a clean musical tone.
+    */
 
-            const gain =
-                audio.createGain();
+    const osc =
+        audio.createOscillator();
 
-            osc.type =
-                "sawtooth";
+    const gain =
+        audio.createGain();
 
-            const frequencies =
-                [240,185,145,105];
 
-            osc.frequency.setValueAtTime(
-                frequencies[index],
-                now + offset
-            );
+    osc.type =
+        "sawtooth";
 
-            osc.frequency.exponentialRampToValueAtTime(
-                frequencies[index] * .65,
-                now + offset + .15
-            );
 
-            gain.gain.setValueAtTime(
-                .0001,
-                now + offset
-            );
+    /*
+       Start high and drop aggressively.
+    */
 
-            gain.gain.exponentialRampToValueAtTime(
-                .55,
-                now + offset + .02
-            );
+    osc.frequency.setValueAtTime(
+        520,
+        now
+    );
 
-            gain.gain.exponentialRampToValueAtTime(
-                .0001,
-                now + offset + .16
-            );
+    osc.frequency.exponentialRampToValueAtTime(
+        230,
+        now + .65
+    );
 
-            osc.connect(gain);
-            gain.connect(audio.destination);
 
-            osc.start(
-                now + offset
-            );
+    /*
+       Loud attack.
+    */
 
-            osc.stop(
-                now + offset + .18
-            );
-        }
+    gain.gain.setValueAtTime(
+        .0001,
+        now
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .65,
+        now + .025
+    );
+
+
+    gain.gain.setValueAtTime(
+        .65,
+        now + .45
+    );
+
+
+    gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now + .75
+    );
+
+
+    osc.connect(gain);
+
+    gain.connect(
+        audio.destination
+    );
+
+
+    osc.start(now);
+
+    osc.stop(
+        now + .8
+    );
+
+
+    /*
+       =====================================
+       LOW HORN LAYER
+       =====================================
+    */
+
+    const horn =
+        audio.createOscillator();
+
+    const hornGain =
+        audio.createGain();
+
+
+    horn.type =
+        "square";
+
+
+    horn.frequency.setValueAtTime(
+        180,
+        now
+    );
+
+    horn.frequency.exponentialRampToValueAtTime(
+        95,
+        now + .7
+    );
+
+
+    hornGain.gain.setValueAtTime(
+        .0001,
+        now
+    );
+
+    hornGain.gain.exponentialRampToValueAtTime(
+        .30,
+        now + .025
+    );
+
+    hornGain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now + .72
+    );
+
+
+    horn.connect(
+        hornGain
+    );
+
+    hornGain.connect(
+        audio.destination
+    );
+
+
+    horn.start(now);
+
+    horn.stop(
+        now + .75
+    );
+
+
+    /*
+       =====================================
+       ELECTRONIC DISTORTION BURST
+       =====================================
+    */
+
+    const noiseBuffer =
+        audio.createBuffer(
+            1,
+            audio.sampleRate * .28,
+            audio.sampleRate
+        );
+
+
+    const data =
+        noiseBuffer.getChannelData(0);
+
+
+    for(
+        let i = 0;
+        i < data.length;
+        i++
+    ) {
+
+        data[i] =
+            (
+                Math.random() * 2 - 1
+            ) * .35;
+
+    }
+
+
+    const noise =
+        audio.createBufferSource();
+
+    const noiseGain =
+        audio.createGain();
+
+
+    noise.buffer =
+        noiseBuffer;
+
+
+    noiseGain.gain.setValueAtTime(
+        .0001,
+        now + .02
+    );
+
+    noiseGain.gain.exponentialRampToValueAtTime(
+        .18,
+        now + .04
+    );
+
+    noiseGain.gain.exponentialRampToValueAtTime(
+        .0001,
+        now + .28
+    );
+
+
+    noise.connect(
+        noiseGain
+    );
+
+    noiseGain.connect(
+        audio.destination
+    );
+
+
+    noise.start(
+        now + .02
+    );
+
+    noise.stop(
+        now + .30
     );
 }
 
 
+/* =========================================
+   TRUE SOUND
+========================================= */
+
 function playTrueSound() {
 
     const audio =
-        audioContext();
+        createAudioContext();
 
-    if(!audio)
+    if(!audio) {
         return;
+    }
 
     const now =
         audio.currentTime;
@@ -1413,8 +1964,10 @@ function playTrueSound() {
             const gain =
                 audio.createGain();
 
+
             osc.type =
                 "sine";
+
 
             osc.frequency.setValueAtTime(
                 index === 0
@@ -1423,23 +1976,31 @@ function playTrueSound() {
                 now + offset
             );
 
+
             gain.gain.setValueAtTime(
                 .001,
                 now + offset
             );
+
 
             gain.gain.exponentialRampToValueAtTime(
                 .28,
                 now + offset + .025
             );
 
+
             gain.gain.exponentialRampToValueAtTime(
                 .001,
                 now + offset + .45
             );
 
+
             osc.connect(gain);
-            gain.connect(audio.destination);
+
+            gain.connect(
+                audio.destination
+            );
+
 
             osc.start(
                 now + offset
@@ -1448,7 +2009,115 @@ function playTrueSound() {
             osc.stop(
                 now + offset + .5
             );
+
         }
+    );
+}
+
+
+/* =========================================
+   ANALYSIS
+========================================= */
+
+function beginAnalysis(result) {
+
+    if(
+        !running ||
+        analyzing
+    ) {
+        return;
+    }
+
+
+    analyzing = true;
+
+
+    analysis.classList.add(
+        "visible"
+    );
+
+
+    confidenceBar.style.width =
+        "0%";
+
+
+    const duration =
+        1800;
+
+
+    const start =
+        performance.now();
+
+
+    function progress(now) {
+
+        if(!analyzing) {
+            return;
+        }
+
+
+        const elapsed =
+            now - start;
+
+
+        const percentage =
+            Math.min(
+                elapsed /
+                duration *
+                100,
+                100
+            );
+
+
+        confidenceBar.style.width =
+            percentage + "%";
+
+
+        if(
+            elapsed < 550
+        ) {
+
+            analysisStatus.textContent =
+                "ANALYZING PHYSIOLOGICAL RESPONSE";
+
+        }
+
+        else if(
+            elapsed < 1150
+        ) {
+
+            analysisStatus.textContent =
+                "COMPARING RESPONSE PATTERNS";
+
+        }
+
+        else if(
+            elapsed < duration
+        ) {
+
+            analysisStatus.textContent =
+                "CALCULATING RESULT";
+
+        }
+
+        else {
+
+            finishResult(
+                result
+            );
+
+            return;
+        }
+
+
+        requestAnimationFrame(
+            progress
+        );
+    }
+
+
+    requestAnimationFrame(
+        progress
     );
 }
 
@@ -1460,106 +2129,47 @@ function playTrueSound() {
 function finishResult(result) {
 
     analyzing = false;
+
     running = false;
+
 
     analysis.classList.remove(
         "visible"
     );
+
 
     verdict.classList.remove(
         "lie",
         "true"
     );
 
+
     if(result === "lie") {
 
-        verdict.classList.add("lie");
+        verdict.classList.add(
+            "lie"
+        );
 
         verdictText.textContent =
             "LIE";
 
+
         playLieAlarm();
 
-    } else {
+    }
 
-        verdict.classList.add("true");
+    else {
+
+        verdict.classList.add(
+            "true"
+        );
 
         verdictText.textContent =
             "TRUE";
 
+
         playTrueSound();
     }
-}
-
-
-function beginAnalysis(result) {
-
-    if(!running || analyzing)
-        return;
-
-    analyzing = true;
-
-    analysis.classList.add(
-        "visible"
-    );
-
-    confidenceBar.style.width =
-        "0%";
-
-    const duration = 1800;
-
-    const start =
-        performance.now();
-
-
-    function progress(now) {
-
-        if(!analyzing)
-            return;
-
-        const elapsed =
-            now - start;
-
-        const percentage =
-            Math.min(
-                elapsed / duration * 100,
-                100
-            );
-
-        confidenceBar.style.width =
-            percentage + "%";
-
-
-        if(elapsed < 550) {
-
-            analysisStatus.textContent =
-                "ANALYZING PHYSIOLOGICAL RESPONSE";
-
-        } else if(elapsed < 1150) {
-
-            analysisStatus.textContent =
-                "COMPARING RESPONSE PATTERNS";
-
-        } else if(elapsed < duration) {
-
-            analysisStatus.textContent =
-                "CALCULATING RESULT";
-
-        } else {
-
-            finishResult(result);
-
-            return;
-        }
-
-        requestAnimationFrame(
-            progress
-        );
-    }
-
-    requestAnimationFrame(
-        progress
-    );
 }
 
 
@@ -1573,7 +2183,10 @@ function chooseResult(requested) {
         forcedResult ||
         requested;
 
-    beginAnalysis(result);
+
+    beginAnalysis(
+        result
+    );
 }
 
 
@@ -1583,65 +2196,82 @@ function chooseResult(requested) {
 
 function animate() {
 
-    if(!running)
+    if(!running) {
         return;
+    }
+
 
     time += .016;
 
+
     drawECG();
+
     drawPressure();
+
     drawRespiration();
+
     drawSkin();
 
 
+    /*
+       Slightly increase variation during
+       the analysis sequence.
+    */
+
     const stress =
         analyzing
-        ?
-        Math.sin(time*3)*2
-        :
-        0;
+            ? Math.sin(time * 3) * 2
+            : 0;
 
 
     const bpm =
         72 +
-        Math.sin(time*.65)*2.5 +
-        Math.sin(time*1.7)*1.1 +
+        Math.sin(time * .65) * 2.5 +
+        Math.sin(time * 1.7) * 1.1 +
         stress;
+
 
     const sys =
         118 +
-        Math.sin(time*.35)*2 +
-        stress*.5;
+        Math.sin(time * .35) * 2 +
+        stress * .5;
+
 
     const dia =
         76 +
-        Math.sin(time*.4)*1.4;
+        Math.sin(time * .4) * 1.4;
+
 
     const rpm =
         16 +
-        Math.sin(time*.22)*1.2;
+        Math.sin(time * .22) * 1.2;
+
 
     const skin =
         2.4 +
-        Math.sin(time*.5)*.12 +
-        Math.sin(time*1.4)*.05;
+        Math.sin(time * .5) * .12 +
+        Math.sin(time * 1.4) * .05;
 
 
     document.getElementById("bpm")
         .textContent =
         Math.round(bpm);
 
+
     document.getElementById("sys")
         .textContent =
         Math.round(sys);
+
 
     document.getElementById("dia")
         .textContent =
         Math.round(dia);
 
+
     document.getElementById("rpm")
         .textContent =
         Math.round(rpm);
+
 
     document.getElementById("microsiemens")
         .textContent =
@@ -1659,61 +2289,87 @@ function animate() {
    OPERATOR MODE
 ========================================= */
 
-const operator =
-    document.getElementById("operator");
-
-document.getElementById("forceLie")
+document
+    .getElementById("forceLie")
     .addEventListener(
         "click",
         function() {
 
-            forcedResult = "lie";
+            forcedResult =
+                "lie";
+
 
             document.getElementById(
                 "operatorStatus"
             ).innerHTML =
                 "Mode: <b>Forced LIE</b>";
+
         }
     );
 
-document.getElementById("forceTrue")
+
+document
+    .getElementById("forceTrue")
     .addEventListener(
         "click",
         function() {
 
-            forcedResult = "true";
+            forcedResult =
+                "true";
+
 
             document.getElementById(
                 "operatorStatus"
             ).innerHTML =
                 "Mode: <b>Forced TRUE</b>";
+
         }
     );
 
-document.getElementById("automatic")
+
+document
+    .getElementById("automatic")
     .addEventListener(
         "click",
         function() {
 
-            forcedResult = null;
+            forcedResult =
+                null;
+
 
             document.getElementById(
                 "operatorStatus"
             ).innerHTML =
                 "Mode: <b>Automatic</b>";
+
         }
     );
 
 
 /* =========================================
-   KEYBOARD
+   KEYBOARD CONTROLS
+=========================================
+
+SPACE
+    LIE
+
+ENTER
+    TRUE
+
+R
+    REFRESH PAGE
+
+CTRL + SHIFT + O
+    OPEN/CLOSE SECRET OPERATOR PANEL
+
 ========================================= */
 
 document.addEventListener(
     "keydown",
     function(event) {
 
-        /* Hidden operator panel */
+
+        /* SECRET OPERATOR PANEL */
 
         if(
             event.ctrlKey &&
@@ -1723,15 +2379,17 @@ document.addEventListener(
 
             event.preventDefault();
 
+
             operator.classList.toggle(
                 "open"
             );
+
 
             return;
         }
 
 
-        /* Refresh */
+        /* REFRESH */
 
         if(
             event.key.toLowerCase() === "r"
@@ -1739,34 +2397,49 @@ document.addEventListener(
 
             event.preventDefault();
 
+
             location.reload();
 
+
             return;
         }
 
 
-        /* Space = LIE */
+        /* LIE */
 
-        if(event.code === "Space") {
+        if(
+            event.code === "Space"
+        ) {
 
             event.preventDefault();
 
-            chooseResult("lie");
+
+            chooseResult(
+                "lie"
+            );
+
 
             return;
         }
 
 
-        /* Enter = TRUE */
+        /* TRUE */
 
-        if(event.code === "Enter") {
+        if(
+            event.code === "Enter"
+        ) {
 
             event.preventDefault();
 
-            chooseResult("true");
+
+            chooseResult(
+                "true"
+            );
+
 
             return;
         }
+
     }
 );
 
@@ -1776,7 +2449,7 @@ document.addEventListener(
 ========================================= */
 
 requestAnimationFrame(
-    () => {
+    function() {
 
         resizeAll();
 
